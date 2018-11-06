@@ -31,7 +31,13 @@ services:
       - "traefik.backend=www"
       - "traefik.port=80"
       - "traefik.frontend.rule=PathPrefix:/"
-  
+  users-client:
+    build: ../users-client
+    labels:
+      - "traefik.backend=users-client"
+      - "traefik.port=80"
+      - "traefik.frontend.rule=PathPrefixStrip:/users"
+
   # Load Balancer
   lb:
     image: traefik #The official Traefik docker image
