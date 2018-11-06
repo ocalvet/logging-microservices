@@ -14,5 +14,5 @@ func main() {
 
 func handleHome(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(200)
-	fmt.Fprintf(w, "{ 'succes': 'true', 'service': 'users' }")
+	fmt.Fprintf(w, "{ 'succes': 'true', 'service': 'todos' }")
 }
