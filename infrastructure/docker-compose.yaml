@@ -37,6 +37,12 @@ services:
       - "traefik.backend=users-client"
       - "traefik.port=80"
       - "traefik.frontend.rule=PathPrefixStrip:/users"
+  todos-client:
+    build: ../todos-client
+    labels:
+      - "traefik.backend=todos-client"
+      - "traefik.port=80"
+      - "traefik.frontend.rule=PathPrefixStrip:/todos"
 
   # Load Balancer
   lb:
