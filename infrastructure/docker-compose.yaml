@@ -2,17 +2,43 @@ version: '3.1'
 services: 
   admin:
     build: ../admin
-    ports:
-      - 8280:8080
+    labels:
+      - "traefik.backend=admin"
+      - "traefik.port=8080"
+      - "traefik.backend.healthcheck.path=/health"
+      - "traefik.backend.healthcheck.interval=5s"
+      - "traefik.frontend.rule=PathPrefixStrip:/api/admin"
   users:
     build: ../users
-    ports:
-      - 8281:8080
+    labels:
+      - "traefik.backend=users"
+      - "traefik.port=8080"
+      - "traefik.backend.healthcheck.path=/health"
+      - "traefik.backend.healthcheck.interval=5s"
+      - "traefik.frontend.rule=PathPrefixStrip:/api/users"
   todos:
     build: ../todos
-    ports:
-      - 8282:8080
+    labels:
+      - "traefik.backend=todos"
+      - "traefik.port=8080"
+      - "traefik.backend.healthcheck.path=/health"
+      - "traefik.backend.healthcheck.interval=5s"
+      - "traefik.frontend.rule=PathPrefixStrip:/api/todos"
+
   www:
     build: ../www
+    labels:
+      - "traefik.backend=www"
+      - "traefik.port=80"
+      - "traefik.frontend.rule=PathPrefix:/"
+  
+  # Load Balancer
+  lb:
+    image: traefik #The official Traefik docker image
+    command: --api --docker #Enables the web UI and tells Træfik to listen to docker
     ports:
-      - 8380:80
+      - "8680:80"     #The HTTP port
+      - "8681:8080" #The Web UI (enabled by --api)
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock #So that Traefik can listen to the Docker events     
+      - /dev/null:/traefik.toml
