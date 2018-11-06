@@ -9,7 +9,7 @@ import (
 func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", handleHome)
-	log.Fatal(http.ListenAndServe(":8280", mux))
+	log.Fatal(http.ListenAndServe(":8080", mux))
 }
 
 func handleHome(w http.ResponseWriter, r *http.Request) {
